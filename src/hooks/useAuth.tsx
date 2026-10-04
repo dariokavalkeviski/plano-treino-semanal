@@ -76,8 +76,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const recuperarSenha = useCallback(async (email: string) => {
+    // BASE_URL já vem com barra no fim e cobre o caso de publicação em
+    // subdiretório (GitHub Pages).
     const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
-      redirectTo: `${window.location.origin}/redefinir-senha`,
+      redirectTo: `${window.location.origin}${import.meta.env.BASE_URL}redefinir-senha`,
     })
     if (error) throw error
   }, [])

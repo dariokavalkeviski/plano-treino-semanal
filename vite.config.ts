@@ -1,11 +1,39 @@
+import { copyFileSync } from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+/**
+ * O app é publicado no GitHub Pages em /plano-treino-semanal/, por isso o base
+ * não é a raiz. Em hospedagens que servem na raiz (Vercel, Netlify), defina
+ * VITE_BASE=/ nas variáveis de ambiente do build.
+ */
+const base = process.env['VITE_BASE'] ?? '/plano-treino-semanal/'
+
+/**
+ * O GitHub Pages não sabe reescrever rotas de SPA: ao abrir /treinos direto,
+ * ele procura um arquivo com esse nome e cai no 404. Servindo uma cópia do
+ * index.html como 404.html, o React Router assume e mostra a tela certa.
+ */
+function fallback404(): Plugin {
+  return {
+    name: 'fallback-404-github-pages',
+    closeBundle() {
+      try {
+        copyFileSync('dist/index.html', 'dist/404.html')
+      } catch {
+        // Build sem index.html (ex.: modo biblioteca): nada a copiar.
+      }
+    },
+  }
+}
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
+    fallback404(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icons/icon-192.png', 'icons/icon-512.png'],
@@ -16,8 +44,8 @@ export default defineConfig({
           'Monte suas rotinas, registre cada série e acompanhe a evolução de carga e volume.',
         lang: 'pt-BR',
         dir: 'ltr',
-        start_url: '/',
-        scope: '/',
+        start_url: base,
+        scope: base,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#0b0f14',
@@ -36,7 +64,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
-        navigateFallback: 'index.html',
+        navigateFallback: `${base}index.html`,
         // O treino precisa abrir offline; dados de API ficam no cache local do app
         // (localStorage/outbox), por isso as chamadas ao Supabase nao sao cacheadas aqui.
         runtimeCaching: [

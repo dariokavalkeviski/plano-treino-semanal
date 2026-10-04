@@ -90,8 +90,9 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOi...`}
 export function App() {
   if (!isSupabaseConfigured) return <ConfiguracaoPendente />
 
+  // Em subdiretório (GitHub Pages), as rotas precisam do prefixo do base.
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AuthProvider>
         <ToastProvider>
           <Toaster />
