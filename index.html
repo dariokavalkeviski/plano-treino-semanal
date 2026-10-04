@@ -1,61 +1,29 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8" />
-  <title>Plano de Treino Semanal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-
-<body>
-  <header>
-    <img src="https://cdn-icons-png.flaticon.com/512/3063/3063762.png" alt="Logo Esportivo" />
-    <h1>Plano de Treino Semanal</h1>
-  </header>
-
-  <!-- Seção IMC -->
-  <section id="imcSection">
-    <h2>📊 Calculadora de IMC Personalizada</h2>
-    <div class="imc-container">
-      <div class="imc-form">
-        <h3>Nova Medição</h3>
-        <div class="form-group">
-          <label for="nomeUsuario">Nome:</label>
-          <input type="text" id="nomeUsuario" placeholder="Digite seu nome">
-        </div>
-        <div class="form-group">
-          <label for="pesoUsuario">Peso (kg):</label>
-          <input type="number" id="pesoUsuario" placeholder="Ex: 70.5" step="0.1" min="20" max="300">
-        </div>
-        <div class="form-group">
-          <label for="alturaUsuario">Altura (m):</label>
-          <input type="number" id="alturaUsuario" placeholder="Ex: 1.75" step="0.01" min="1.0" max="2.5">
-        </div>
-        <button id="btnCalcularIMC">Calcular IMC</button>
-      </div>
-
-      <div class="imc-result" id="imcResult" style="display: none;">
-        <h3>Resultado</h3>
-        <div class="imc-value" id="imcValue"></div>
-        <div class="imc-classification" id="imcClassification"></div>
-        <div class="imc-recommendations" id="imcRecommendations"></div>
-      </div>
-    </div>
-
-    <div class="imc-history" id="imcHistory" style="display: none;">
-      <h3>📈 Histórico de Medições</h3>
-      <div class="chart-container">
-        <canvas id="imcChart" width="400" height="200"></canvas>
-      </div>
-      <div class="history-table" id="historyTable"></div>
-      <button id="btnLimparHistorico">Limpar Histórico</button>
-    </div>
-  </section>
-
-  <div id="treinosContainer"></div>
-
-  <script src="script.js"></script>
-</body>
-
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>FitTrack — Treinos de Academia</title>
+    <meta
+      name="description"
+      content="Monte suas rotinas de treino, registre cada série executada e acompanhe a evolução de carga e volume."
+    />
+    <meta name="theme-color" content="#0b0f14" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="FitTrack" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <noscript>O FitTrack precisa de JavaScript habilitado para funcionar.</noscript>
+  </body>
 </html>

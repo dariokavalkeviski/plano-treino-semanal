@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html,
+  body {
+    @apply bg-base-900 text-slate-100;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    /* Evita o "pull to refresh" cancelar o registro de série sem querer. */
+    overscroll-behavior-y: none;
+  }
+
+  /* Foco visível em tudo que é operável — requisito de acessibilidade. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-lime-400 ring-offset-2 ring-offset-base-900;
+  }
+
+  /* Remove as setinhas dos inputs numéricos: no treino usamos os botões +/-. */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-white/5 bg-base-800 shadow-card;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-slate-300;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-white/10 bg-base-700 px-4 py-3 text-base text-slate-100
+      placeholder:text-slate-500 transition-colors
+      focus:border-lime-400/60 focus:bg-base-600
+      disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .input-erro {
+    @apply border-danger/70 focus:border-danger;
+  }
+
+  .erro-campo {
+    @apply mt-1.5 flex items-start gap-1.5 text-sm text-danger;
+  }
+
+  /* Alvos de toque de 48px: o app é usado com uma mão, durante o treino. */
+  .btn {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl px-5
+      text-base font-semibold transition-all
+      active:scale-[0.98]
+      disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primario {
+    @apply btn bg-lime-400 text-base-900 hover:bg-lime-300;
+  }
+
+  .btn-secundario {
+    @apply btn border border-white/10 bg-base-700 text-slate-100 hover:bg-base-600;
+  }
+
+  .btn-fantasma {
+    @apply btn text-slate-300 hover:bg-white/5;
+  }
+
+  .btn-perigo {
+    @apply btn bg-danger/15 text-danger hover:bg-danger/25;
+  }
+
+  .chip {
+    @apply inline-flex min-h-[40px] items-center rounded-full border border-white/10
+      bg-base-700 px-4 text-sm font-medium text-slate-300 transition-colors;
+  }
+
+  .chip-ativo {
+    @apply border-lime-400 bg-lime-400/15 text-lime-300;
+  }
+
+  .selo {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold;
+  }
+
+  .titulo-secao {
+    @apply mb-3 text-xs font-bold uppercase tracking-wider text-slate-400;
+  }
+
+  .scroll-x {
+    @apply flex gap-2 overflow-x-auto pb-1;
+    scrollbar-width: none;
+  }
+  .scroll-x::-webkit-scrollbar {
+    display: none;
+  }
+}
