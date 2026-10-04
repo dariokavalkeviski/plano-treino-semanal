@@ -94,18 +94,33 @@ As migrações estão em [`supabase/migrations/`](supabase/migrations/) e precis
 | `20260101000000_fittrack_schema.sql` | Tabelas, índices, RLS, views e funções |
 | `20260101000100_seed_exercises.sql` | Carrega os 78 exercícios da biblioteca |
 
-**Opção A — pelo painel (mais simples)**
+**Opção A — pelo painel (sem instalar nada)**
 
-Abra o **SQL Editor** do projeto, cole o conteúdo de cada arquivo e execute, um de cada vez.
+Abra o **SQL Editor** do projeto, cole o conteúdo de
+[`APLICAR-NO-SUPABASE.sql`](APLICAR-NO-SUPABASE.sql) (que é a soma das duas migrações) e execute.
 
-**Opção B — pela CLI do Supabase**
+**Opção B — pelo script do projeto**
+
+```bash
+npm run db:aplicar -- "postgresql://postgres.SEU_REF:SENHA@...pooler.supabase.com:5432/postgres"
+```
+
+A string de conexão está em **Project Settings → Database → Connection string → URI**, aba
+**Session pooler** (porta 5432). A porta 6543 é do *Transaction pooler* e não executa os blocos
+`DO $$ ... $$` destas migrações — o script avisa se você usar a errada.
+
+A senha do banco não é a senha da sua conta Supabase; ela se redefine na mesma tela. Ao final o
+script mostra quantas tabelas foram criadas, quantas estão com RLS e quantos exercícios entraram.
+
+**Opção C — pela CLI do Supabase**
 
 ```bash
 npx supabase link --project-ref SEU_PROJECT_REF
 npx supabase db push
 ```
 
-Ambas as migrações são idempotentes: podem ser reexecutadas sem duplicar dados.
+As migrações são idempotentes: podem ser reexecutadas sem duplicar dados. O PostgreSQL executa
+cada arquivo em uma transação, então uma falha não deixa o banco pela metade.
 
 ### 5. Configurar as variáveis de ambiente
 
