@@ -1,5 +1,7 @@
 # 💪 FitTrack
 
+**App publicado:** <https://dariokavalkeviski.github.io/plano-treino-semanal/>
+
 Aplicativo web **mobile-first** para registrar e acompanhar treinos de academia: monte suas
 rotinas, registre cada série executada e acompanhe a evolução de carga e volume ao longo do tempo.
 
@@ -194,17 +196,35 @@ envio.
 
 ## Publicação
 
-O app usa rotas no cliente (`BrowserRouter`), então o servidor precisa devolver `index.html` para
-qualquer caminho. Já estão no repositório:
+### GitHub Pages (configuração atual)
 
-- `vercel.json` — rewrites para a Vercel
-- `public/_redirects` — rewrites para a Netlify
+O app é publicado em <https://dariokavalkeviski.github.io/plano-treino-semanal/> pelo workflow
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), que roda a cada push no `main`.
 
-Em qualquer uma delas, configure `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` nas variáveis de
-ambiente do projeto (elas são lidas **no build**, não em tempo de execução).
+Em **Settings → Pages**, a origem precisa estar como **GitHub Actions** (não "Deploy from a
+branch") — o Pages precisa publicar o `dist/` gerado pelo build, não o `index.html` do código-fonte.
 
-> O GitHub Pages não suporta rewrites de SPA nem variáveis de build desse tipo, por isso não é
-> recomendado para esta versão do projeto.
+Três detalhes fazem o Pages funcionar com uma SPA em subdiretório:
+
+- `base` do Vite é `/plano-treino-semanal/`, e o `BrowserRouter` usa o mesmo prefixo
+- o build copia `index.html` para `404.html`, que é como o Pages atende rotas como `/treinos`
+- `.nojekyll` impede o Pages de ignorar arquivos iniciados por `_`
+
+**Para o app sair da tela de "configuração necessária"**, cadastre os secrets em
+**Settings → Secrets and variables → Actions**:
+
+| Secret | Valor |
+| --- | --- |
+| `VITE_SUPABASE_URL` | Project URL do Supabase |
+| `VITE_SUPABASE_ANON_KEY` | anon public key do Supabase |
+
+Depois rode o workflow de novo (**Actions → Publicar no GitHub Pages → Run workflow**). As
+variáveis são lidas **no build**, então mudá-las exige um novo deploy.
+
+### Vercel ou Netlify
+
+Também já estão prontos `vercel.json` e `public/_redirects` com os rewrites de SPA. Como essas
+hospedagens servem na raiz, defina `VITE_BASE=/` junto das variáveis do Supabase.
 
 ---
 
